@@ -33,11 +33,11 @@ app.get('/', function (req, res) {
 *   method to POST and save sensor data for ANY sensor name
 *   pass the sensor name in the :sensor
 *   Example: /sensordata/MySensorName
-*   Data is in the posted data JSON object, it can contain as many datapoints as needed, however, 
+*   Data is in the posted data JSON object called "data", it can contain as many datapoints as needed, however, 
 *   it cannot contain an array []
 *   Everything must be a string, so numbers should be enclosed in quotes
-*   Valid: {'temp':'27','motion':'false','variance':'9'} 
-*   Invalid: [{'temp1':25},{'temp2':88}]
+*   Valid: {"data":{'temp':'27','motion':'false','variance':'9'}}
+*   Invalid: {"data":[{'temp1':25},{'temp2':88}]}
 *   (Even though the last example was valid JSON, it cannot be saved into the same database columnfamily)
 *
 *   Returns: JSON result of success or failure

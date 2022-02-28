@@ -1,0 +1,16 @@
+{
+  "name": "combined_server",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_web": "cd webconsole && npm run start",
+    "start_api": "cd server && npm run start",
+    "start": "concurrently --kill-others \"npm run start_web\" \"npm run start_api\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
