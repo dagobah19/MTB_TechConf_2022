@@ -8,6 +8,11 @@ entry_date timestamp,
 motion Boolean,
 primary key (sensor_name,entry_date));
 
+CREATE TABLE sensors(
+    "sensor_name" text,
+    primary key (sensor_name)
+); 
+
 CREATE TABLE unstructured_sensordata(
     "sensor_name" text,
     "entry_date" timestamp,

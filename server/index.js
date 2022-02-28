@@ -46,6 +46,12 @@ app.post('/sensordata/:sensor', function(req,res){
     var sensorName=req.params.sensor;
     var timestamp = req.body.timestamp;
     var data=(JSON.stringify(req.body.data)).replace(/\"/g, '\'');
+    var sensorquery = "INSERT INTO sensors (sensor_name) VALUES ('"+sensorName+"')"
+    client.execute(sensorquery,function(err,result){
+        if (err){
+            console.log("SENSOR insert error: "+err)
+        }
+    })
     if (timestamp){
         //var datetime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:MM:ss");
     } else {
