@@ -81,6 +81,7 @@ const getUniqueID = () => {
 
 //send data to all connected clients
 const sendMessage = (message) => {
+    //console.log(JSON.stringify(message))
     Object.keys(clients).map((client) => {
       clients[client].send(message);
     });
@@ -118,7 +119,6 @@ wsServer.on('request', function(request) {
 app.get('/', function (req, res) {
     res.send('Not implemented');
     //res.sendStatus(200)
-
 });
 
 /*  
@@ -158,6 +158,7 @@ app.post('/sensordata/:sensor', function(req,res){
             res.json({"result":"error"});
         } else {
             res.json({"result":"success"});
+            getSensorData(sensorName)
         }
     });
 })
@@ -172,28 +173,10 @@ app.post('/sensordata/:sensor', function(req,res){
 */
 
 app.get('/sensordata/:sensor', function(req,res) {
-    const queryObj = url.parse(req.url, true).query;
     var limit=1000
+    const queryObj = url.parse(req.url, true).query;
     if (queryObj.limit && !isNaN(queryObj.limit) && queryObj.limit>0) {limit=queryObj.limit}
-    var returnedData=[];
-    var sensorName=req.params.sensor;
-    var query = "SELECT entry_date,data from unstructured_sensordata WHERE sensor_name = ? LIMIT "+limit;
-    client.stream(query,[sensorName])
-        .on('readable', function(){
-            var row;
-            while (row=this.read()){
-                returnedData.push({"timestamp":row.entry_date,"data":row.data})
-            }
-        })
-        .on('end', function () {
-            // Stream ended, there aren't any more rows
-            res.json(returnedData);
-          })
-          .on('error', function (err) {
-            // Something went wrong: err is a response error from Cassandra
-            res.json();
-          });
-
+    getSensorData(req.params.sensor,limit,res)
 });
 
 
@@ -206,3 +189,25 @@ app.use(function(req, res, next) {
     res.status(404).send("Not Found");
 });
 
+function getSensorData(sensor,limit,res){
+    if (!limit) limit=5;
+    var returnedData=[];
+    var query = "SELECT entry_date,data from unstructured_sensordata WHERE sensor_name = ? LIMIT "+limit;
+    client.stream(query,[sensor])
+        .on('readable', function(){
+            var row;
+            while (row=this.read()){
+                returnedData.push({"timestamp":row.entry_date,"data":row.data})
+            }
+        })
+        .on('end', function () {
+            // Stream ended, there aren't any more rows
+            res?res.json({"sensor":sensor,"data":returnedData}):sendMessage({"sensor":sensor,"data":returnedData});
+            return true;
+          })
+          .on('error', function (err) {
+            // Something went wrong: err is a response error from Cassandra
+            res?res.json():false;
+            return false;
+          });
+}
