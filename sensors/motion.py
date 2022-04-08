@@ -26,6 +26,19 @@ GPIO.setup(led,GPIO.OUT)
 GPIO.output(led,GPIO.LOW)
 GPIO.setup(gpio_switch,GPIO.IN)
 
+def sendData(val):
+    try:
+        r = requests.post(
+            host, json={
+                "data":{
+                    "motion":val
+                    }
+                }
+            )
+    except requests.exceptions.RequestException as e:
+        print(e)
+        r="Bad"
+
 try:
     while True:
         while GPIO.input(gpio_switch)==1:
@@ -33,27 +46,16 @@ try:
             if(GPIO.input(pir)):
                 # Motion is detected
                 GPIO.output(led,GPIO.HIGH)
-                r = requests.post(
-                    host, json={
-                        "data":{
-                            "motion":"true"
-                        }
-                    }
-                )
+                sendData("true")
             else:
                 # Motion is not detected
                 GPIO.output(led,GPIO.LOW)
-                r = requests.post(
-                    host, json={
-                        "data":{
-                            "motion":"false"
-                        }
-                    }
-                )
+                sendData("false")
             # pause for 1 second
             time.sleep(1)
         # turn off the LED
         GPIO.output(led,GPIO.LOW)
+        
 # We need this so we can cleanup and free the GPIO when user terminates the program by pressing Ctrl-C
 except KeyboardInterrupt:
     print("Stopping")
