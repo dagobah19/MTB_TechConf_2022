@@ -1,11 +1,15 @@
 
+import  { Component } from 'react';
 import './App.css';
 import Main from './layouts/main';
 
-function App() {
-  return (
-    <Main></Main>
-  );
+class App extends Component {
+
+  render(){
+    return (
+      <Main></Main>
+    );
+  }
 }
 
 export default App;

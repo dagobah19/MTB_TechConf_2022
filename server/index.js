@@ -83,7 +83,7 @@ const getUniqueID = () => {
 const sendMessage = (message) => {
     //console.log(JSON.stringify(message))
     Object.keys(clients).map((client) => {
-      clients[client].send(message);
+      clients[client].send(JSON.stringify(message));
     });
 }
 
@@ -158,7 +158,7 @@ app.post('/sensordata/:sensor', function(req,res){
             res.json({"result":"error"});
         } else {
             res.json({"result":"success"});
-            getSensorData(sensorName)
+            getSensorData(sensorName,100)
         }
     });
 })
