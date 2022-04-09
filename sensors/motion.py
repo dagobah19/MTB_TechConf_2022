@@ -26,6 +26,9 @@ GPIO.setup(led,GPIO.OUT)
 GPIO.output(led,GPIO.LOW)
 GPIO.setup(gpio_switch,GPIO.IN)
 
+# DEBUG mode: Setting this to "True" will not send data to IoT server
+debug = False
+
 try:
     while True:
         while GPIO.input(gpio_switch)==1:
@@ -33,11 +36,13 @@ try:
             if(GPIO.input(pir)):
                 # Motion is detected
                 GPIO.output(led,GPIO.HIGH)
-                sendData(host,"motion","true")
+                if not debug:
+                    sendData(host,"motion","true")
             else:
                 # Motion is not detected
                 GPIO.output(led,GPIO.LOW)
-                sendData(host,"motion","false")
+                if not debug:
+                    sendData(host,"motion","false")
             # pause for 1 second
             time.sleep(1)
         # turn off the LED

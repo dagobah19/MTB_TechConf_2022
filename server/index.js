@@ -189,6 +189,12 @@ app.use(function(req, res, next) {
     res.status(404).send("Not Found");
 });
 
+/*
+*   Function to get sensor data for an individual sensor
+*   If res is passed, a response is assumed and sent from the res based on the query
+*   If res is ommitted, the data will be passed to sendMessage() which will broadcast to the connected socket clients
+*/
+
 function getSensorData(sensor,limit,res){
     if (!limit) limit=5;
     var returnedData=[];

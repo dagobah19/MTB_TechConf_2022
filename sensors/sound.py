@@ -30,6 +30,9 @@ GPIO.output(led, GPIO.HIGH)
 soundstart = True
 soundend= True
 
+# DEBUG mode: Setting this to "True" will not send data to IoT server
+debug = False
+
 try:
     while True:
         if GPIO.input(sound):
@@ -39,7 +42,8 @@ try:
                 print("Sound")
                 soundend = True
                 soundstart = False
-                sendData(host,"sound","true")
+                if not debug:
+                    sendData(host,"sound","true")
             time.sleep(1)
         else:
             # no sound
@@ -48,7 +52,8 @@ try:
                 print("Quiet")
                 soundend = False
                 soundstart = True
-                sendData(host,"sound","true")
+                if not debug:
+                    sendData(host,"sound","true")
 # We need this so we can cleanup and free the GPIO when user terminates the program by pressing Ctrl-C
 except KeyboardInterrupt:
     print("Why'd you stop me? An I not good enough for you?")
