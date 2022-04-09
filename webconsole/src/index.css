@@ -10,4 +10,6 @@ body {
 .chart-container {
   width:20rem;
 }
-
+.line-chart-container {
+  width:40rem;
+}

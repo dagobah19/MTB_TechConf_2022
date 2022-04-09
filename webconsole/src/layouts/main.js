@@ -1,5 +1,6 @@
 
-import Motion from '../components/sensors/motion'
+import PieDisplay from '../components/charts/pie-display'
+import LineChartDisplay from '../components/charts/line-chart';
 import {Container, Row} from 'react-bootstrap'
 import { Component } from 'react';
 import ApiService from '../services/api.service';
@@ -12,12 +13,21 @@ class Main extends Component {
     constructor(){
         super()
         this.state = {
-            motionData:[0,0]
+            motionData:[0,0],
+            temperatureLabels:[],
+            temperatureData:[]
         }
 
     }
 
     componentDidMount(){
+        //get all the sensors
+        ApiService.getSensorList().then((response)=>{
+            response.data.forEach(vals=>{
+                //console.log(vals.sensor_name)
+            })
+        })
+
         ApiService.getSensorData('motion').then((response) => {
             var motion=0, nomotion=0
             response.data.data.forEach(vals=>{
@@ -26,6 +36,15 @@ class Main extends Component {
             this.setState({motionData:[motion,nomotion]})
       
           });
+        
+        ApiService.getSensorData('temperature').then((response)=>{
+            response.data.data.forEach(vals=>{
+                this.setState({
+                    temperatureLabels:[...this.state.temperatureLabels,vals.timestamp],
+                    temperatureData:[...this.state.temperatureData,vals.data.temperature]
+                })
+            })
+        })
 
 
 
@@ -42,6 +61,18 @@ class Main extends Component {
                 })
                 this.setState({motionData:[motion,nomotion]})
                 break;
+              case('temperature'):
+                this.setState({
+                    temperatureData:[],
+                    temperatureLabels:[]
+                })
+                dataFromServer.data.forEach(vals=>{
+                    this.setState({
+                        temperatureLabels:[...this.state.temperatureLabels,vals.timestamp],
+                        temperatureData:[...this.state.temperatureData,vals.data.temperature]
+                    })
+                })
+              break;
               default:
                   break;
           }
@@ -54,12 +85,22 @@ class Main extends Component {
         return (
             <Container fluid>
                 <Row>
-                    Welcome
+                    <h1>Sensor Console View</h1>
                 </Row>
                 <Row id="dataDisplay">
-                <Motion 
-                    values = {values}
+                <PieDisplay 
+                    title = 'Motion'
+                    label1 = 'Motion Detected'
+                    label2 = 'No Motion Detected'
+                    datakey = {values.motionData}
                 />
+                </Row>
+                <Row>
+                    <LineChartDisplay
+                        title='Temperature'
+                        datakey={this.state.temperatureData}
+                        labelkey={this.state.temperatureLabels}
+                    />
                 </Row>
             </Container>
         )

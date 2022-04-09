@@ -5,21 +5,21 @@ import {Card, Col, Row } from 'react-bootstrap'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function Motion(props) {
+export default function PieDisplay(props) {
 
     return (
     <Row>
         <Col>
             <Card className="chart-container">
-            <Card.Header>Motion Detector</Card.Header>
+            <Card.Header>{props.title} Sensor</Card.Header>
             <Card.Body>
                 <Card.Text>
                     <Pie data={{
-                    labels: ['Motion Detected', 'No Motion'],
+                    labels: [props.label1, props.label2],
                     datasets: [
                         {
-                        label: 'Motion Sensor',
-                        data: props.values.motionData,
+                        label: props.title + ' Sensor',
+                        data: props.datakey,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -38,12 +38,12 @@ export default function Motion(props) {
         </Col>
         <Col>
             <Card className="chart-container">
-            <Card.Header>Motion Detector</Card.Header>
+            <Card.Header>{props.title} Sensor</Card.Header>
             <Card.Body>
                 <Card.Text>
-                    <span>Motion Detected: {props.values.motionData[0]}</span>
+                    <span>{props.label1}: {props.datakey[0]}</span>
                     <br/>
-                    <span>No Motion Detected: {props.values.motionData[1]}</span>
+                    <span>{props.label2}: {props.datakey[1]}</span>
                 </Card.Text>
             </Card.Body>
             </Card>

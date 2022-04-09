@@ -6,6 +6,10 @@ class ApiService {
         return http.get(`http://localhost:3005/sensordata/${sensor}`);
     }
 
+    getSensorList(){
+        return http.get(`http://localhost:3005/sensors`);
+    }
+
 }
 
 export default new ApiService();
