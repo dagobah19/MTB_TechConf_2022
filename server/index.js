@@ -121,6 +121,31 @@ app.get('/', function (req, res) {
     //res.sendStatus(200)
 });
 
+/*
+*   method to GET all sensors in the database
+*   this will return a list of all the sensors with data in the database
+*/
+
+app.get('/sensors', function(req,res){
+    var sensors=[]
+    var query = "SELECT sensor_name FROM sensors";
+    client.stream(query)
+        .on('readable', function(){
+            var row;
+            while (row=this.read()){
+                sensors.push({"sensor_name":row.sensor_name})
+            }
+        })
+        .on('end', function () {
+            // Stream ended, there aren't any more rows
+           res.json(sensors)
+          })
+          .on('error', function (err) {
+            // Something went wrong: err is a response error from Cassandra
+            res.json()
+          });
+})
+
 /*  
 *   method to POST and save sensor data for ANY sensor name
 *   pass the sensor name in the :sensor
