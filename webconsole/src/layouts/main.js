@@ -39,8 +39,10 @@ class Main extends Component {
         
         ApiService.getSensorData('temperature').then((response)=>{
             response.data.data.forEach(vals=>{
+                let date = new Date(vals.timestamp)
+                let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
                 this.setState({
-                    temperatureLabels:[...this.state.temperatureLabels,vals.timestamp],
+                    temperatureLabels:[...this.state.temperatureLabels,timestring],
                     temperatureData:[...this.state.temperatureData,vals.data.temperature]
                 })
             })
