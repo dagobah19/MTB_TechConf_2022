@@ -13,9 +13,11 @@ class Main extends Component {
     constructor(){
         super()
         this.state = {
+            showAllSensors:false,
+            allSensors:[],
             motionData:[0,0],
             temperatureLabels:[],
-            temperatureData:[]
+            temperatureData:[],
         }
 
     }
@@ -24,7 +26,9 @@ class Main extends Component {
         //get all the sensors
         ApiService.getSensorList().then((response)=>{
             response.data.forEach(vals=>{
-                //console.log(vals.sensor_name)
+                this.setState({
+                    allSensors:[...this.state.allSensors,vals.sensor_name]
+                })
             })
         })
 
@@ -69,8 +73,10 @@ class Main extends Component {
                     temperatureLabels:[]
                 })
                 dataFromServer.data.forEach(vals=>{
+                    let date = new Date(vals.timestamp)
+                    let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
                     this.setState({
-                        temperatureLabels:[...this.state.temperatureLabels,vals.timestamp],
+                        temperatureLabels:[...this.state.temperatureLabels,timestring],
                         temperatureData:[...this.state.temperatureData,vals.data.temperature]
                     })
                 })
@@ -81,9 +87,17 @@ class Main extends Component {
         }
       }
 
+    
+
+    componentWillUnmount(){
+        client.close = () =>{
+            //close connection on unmount
+            console.log("disconnected websocket connection") 
+        }
+    }
+      
     render(){
-        const {motionData} = this.state
-        const values = {motionData}
+        const {motionData,temperatureData,temperatureLabels} = this.state
         return (
             <Container fluid>
                 <Row>
@@ -94,14 +108,14 @@ class Main extends Component {
                     title = 'Motion'
                     label1 = 'Motion Detected'
                     label2 = 'No Motion Detected'
-                    datakey = {values.motionData}
+                    datakey = {motionData}
                 />
                 </Row>
                 <Row>
                     <LineChartDisplay
                         title='Temperature'
-                        datakey={this.state.temperatureData}
-                        labelkey={this.state.temperatureLabels}
+                        datakey={temperatureData}
+                        labelkey={temperatureLabels}
                     />
                 </Row>
             </Container>
