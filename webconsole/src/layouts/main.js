@@ -17,7 +17,7 @@ class Main extends Component {
             allSensors:[],
             motionData:[0,0],
             temperatureLabels:[],
-            temperatureData:[],
+            temperatureData:[]
         }
 
     }
@@ -52,42 +52,55 @@ class Main extends Component {
             })
         })
 
+        //connect to websocket
+        this.wsconnection()
 
-
-        client.onopen = () => {
-          console.log('websocket connected')
-        };
-        client.onmessage = (message) => {
-          const dataFromServer = JSON.parse(message.data);
-          switch(dataFromServer.sensor){
-              case('motion'):
-                var motion=0,nomotion=0
-                dataFromServer.data.forEach(vals=>{
-                    vals.data.motion==="true"?motion++:nomotion++;
-                })
-                this.setState({motionData:[motion,nomotion]})
-                break;
-              case('temperature'):
-                this.setState({
-                    temperatureData:[],
-                    temperatureLabels:[]
-                })
-                dataFromServer.data.forEach(vals=>{
-                    let date = new Date(vals.timestamp)
-                    let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
-                    this.setState({
-                        temperatureLabels:[...this.state.temperatureLabels,timestring],
-                        temperatureData:[...this.state.temperatureData,vals.data.temperature]
-                    })
-                })
-              break;
-              default:
-                  break;
-          }
-        }
       }
 
-    
+    wsconnection = () => {
+        client.onopen = () => {
+            console.log('websocket connected')
+          };
+        
+        client.onmessage = (message) => {
+            const dataFromServer = JSON.parse(message.data);
+            switch(dataFromServer.sensor){
+                case('motion'):
+                    var motion=0,nomotion=0
+                    dataFromServer.data.forEach(vals=>{
+                        vals.data.motion==="true"?motion++:nomotion++;
+                    })
+                    this.setState({motionData:[motion,nomotion]})
+                    break;
+                case('temperature'):
+                    this.setState({
+                        temperatureData:[],
+                        temperatureLabels:[]
+                    })
+                    dataFromServer.data.forEach(vals=>{
+                        let date = new Date(vals.timestamp)
+                        let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+                        this.setState({
+                            temperatureLabels:[...this.state.temperatureLabels,timestring],
+                            temperatureData:[...this.state.temperatureData,vals.data.temperature]
+                        })
+                    })
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        client.onclose = e => {
+            console.log("Socket has been closed: "+e.reason)
+        }
+
+        client.onerror = err => {
+            console.error(err.message + " - Closing websocket");
+            client.close();
+        }
+        
+    }
 
     componentWillUnmount(){
         client.close = () =>{
