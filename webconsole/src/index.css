@@ -7,8 +7,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.chart-container, .line-chart-container {
+  margin:2em 2em 0;
+  padding:0;
+}
+
 .chart-container {
-  width:20rem;
+  width:25rem;
+
 }
 .line-chart-container {
   width:40rem;

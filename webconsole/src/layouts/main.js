@@ -103,15 +103,13 @@ class Main extends Component {
                 <Row>
                     <h1>Sensor Console View</h1>
                 </Row>
-                <Row id="dataDisplay">
-                <PieDisplay 
-                    title = 'Motion'
-                    label1 = 'Motion Detected'
-                    label2 = 'No Motion Detected'
-                    datakey = {motionData}
-                />
-                </Row>
                 <Row>
+                    <PieDisplay 
+                        title = 'Motion'
+                        label1 = 'Motion Detected'
+                        label2 = 'No Motion Detected'
+                        datakey = {motionData}
+                    />
                     <LineChartDisplay
                         title='Temperature'
                         datakey={temperatureData}
