@@ -42,6 +42,11 @@ We can also run each individually:
 `cd webconsole`
 `npm start`
 
+## Deploying webconsole
+You may also compile / optimize the webconsole and deploy to nginx/apache:
+- `npm run build`
+- `cp dist/. /path/to/html`
+
 # Sensors
 There are 2 sensors currently configured:
 - motion: detects whether there is motion or not (true/false), sends data on demand when the event occurs
