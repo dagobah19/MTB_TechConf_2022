@@ -152,8 +152,8 @@ app.get('/sensors', function(req,res){
 *   Example: /sensordata/MySensorName
 *   Data is in the posted data JSON object called "data", it can contain as many datapoints as needed, however, 
 *   it cannot contain an array []
-*   Everything must be a string, so numbers should be enclosed in quotes
-*   Valid: {"data":{'temp':'27','motion':'false','variance':'9'}}
+*   Everything must be a string or a number
+*   Valid: {"data":{'temp':'27','motion':'false','variance':9.2}}
 *   Invalid: {"data":[{'temp1':25},{'temp2':88}]}
 *   (Even though the last example was valid JSON, it cannot be saved into the same database columnfamily)
 *
@@ -162,6 +162,10 @@ app.get('/sensors', function(req,res){
 app.post('/sensordata/:sensor', function(req,res){
     var sensorName=req.params.sensor;
     var timestamp = req.body.timestamp;
+    for (let key in req.body.data){
+        let value=req.body.data[key].toString()
+        req.body.data[key]=value
+    }
     var data=(JSON.stringify(req.body.data)).replace(/\"/g, '\'');
     var sensorquery = "INSERT INTO sensors (sensor_name) VALUES ('"+sensorName+"')"
     client.execute(sensorquery,function(err,result){
