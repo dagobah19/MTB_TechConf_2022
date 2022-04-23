@@ -39,8 +39,8 @@ export default function LineChartDisplay(props){
                             labels:props.labelkey,
                             datasets:[{
                                 data:props.datakey,
-                                borderColor: 'rgb(53, 162, 235)',
-                                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                                borderColor: props.border,
+                                backgroundColor: props.background,
                                 label:props.title
                             }]
 

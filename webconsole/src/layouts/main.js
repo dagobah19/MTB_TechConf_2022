@@ -182,6 +182,8 @@ class Main extends Component {
                     />
                     <LineChartDisplay
                         title='Distance'
+                        border = 'rgb(53, 162, 235)'
+                        background = 'rgba(53, 162, 235, 0.5)'
                         datakey={distanceData}
                         labelkey={distanceLabels}
                     />
