@@ -20,7 +20,7 @@ delay = 5
 
 # define the server and sensor name
 sensor_name="distance"
-url = 'http://192.168.1.145:3005'
+url = 'http://192.168.1.146:3005'
 endpoint = "/sensordata/"+sensor_name
 host = url+endpoint
 

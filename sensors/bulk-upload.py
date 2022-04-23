@@ -1,6 +1,6 @@
 # For usage details, see README file
 
-svcURL = 'http://1.2.3.4:3000'
+svcURL = 'http://192.168.1.146:3005'
 pathToData = '/home/pi/IoT/'
 
 # import everything we need

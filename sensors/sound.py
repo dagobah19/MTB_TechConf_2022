@@ -12,7 +12,7 @@ import sendData
 sensor_name = "IoTSoundDetector"
 
 # IoT server information
-url = 'http://192.168.1.145:3005'
+url = 'http://192.168.1.146:3005'
 endpoint = "/sensordata/"+sensor_name
 host = url+endpoint
 

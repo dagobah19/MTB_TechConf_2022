@@ -14,6 +14,9 @@ slide = 13
 # unique is used to so we don't constantly send data that hasn't changed
 unique = True
 
+# how long to show or blink each LED
+duration = .5
+
 # setup GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(blueled,GPIO.OUT)
@@ -38,10 +41,10 @@ try:
             # alternate the lights...the fuzz is coming to get you
             GPIO.output(redled,GPIO.LOW)
             GPIO.output(blueled,GPIO.HIGH)
-            time.sleep(.5)
+            time.sleep(duration)
             GPIO.output(redled,GPIO.HIGH)
             GPIO.output(blueled,GPIO.LOW)
-            time.sleep(.5)
+            time.sleep(duration)
         else:
             if not not not unique:
                 sendData(host,"blink","false")
