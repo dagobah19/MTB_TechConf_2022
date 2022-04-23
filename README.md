@@ -48,12 +48,16 @@ You may also compile / optimize the webconsole and deploy to nginx/apache:
 - `cp dist/. /path/to/html`
 
 # Sensors
-There are 2 sensors currently configured:
-- motion: detects whether there is motion or not (true/false), sends data on demand when the event occurs
-- sound: detects whether there is sound or not (true/false), sends data on demand when the event occurs
+There are 5 sensors currently configured, plus a template:
+- blink
+- climate
+- distance
+- motion
+- sound
+- template
 
 ## Running
-To run the sensor code on the sensors, simply run `python <sensorname>.py`
+To run the sensor code on the sensors, simply run `python3 <sensorname>.py`
 
 ## Configuration
 Once the hardware is built, the sensors are ready to run immediately. A couple of things to check before running:
@@ -64,6 +68,8 @@ Once the hardware is built, the sensors are ready to run immediately. A couple o
 ## Making Changes
 If you rewire hardware, add or remove sensors, etc, make sure the code is updated. 
 You can make a copy of the code by entering the command `cp <sensor>.py <newfile>.py`
+
+Use nano to edit the file `nano <sensor>.py`
 
 If you change the name of the sensor, you will need to add it to the webconsole manually to get it to report correctly
 
