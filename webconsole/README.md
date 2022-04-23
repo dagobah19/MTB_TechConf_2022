@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## ENV
+
+We are using .env files to manage the credentials and URLs between environments. The .env files are NOT stored in github
+
+1. create a .env file in this base directory
+2. create two variables & set the value appropriately
+    - REACT_APP_API_URL
+    - REACT_APP_SOCKET_URL
+
 ## Available Scripts
 
 In the project directory, you can run:
