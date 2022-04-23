@@ -16,8 +16,10 @@ class Main extends Component {
             showAllSensors:false,
             allSensors:[],
             motionData:[0,0],
-            temperatureLabels:[],
-            temperatureData:[]
+            soundData:[0,0],
+            blinkData:[0,0],
+            distanceLabels:[],
+            distanceData:[]
         }
 
     }
@@ -40,14 +42,31 @@ class Main extends Component {
             this.setState({motionData:[motion,nomotion]})
       
           });
-        
-        ApiService.getSensorData('temperature').then((response)=>{
+
+        ApiService.getSensorData('sound').then((response) => {
+            var sound=0, nosound=0
+            response.data.data.forEach(vals=>{
+              vals.data.sound==="true"?sound++:nosound++;
+            })
+            this.setState({soundData:[sound,nosound]})
+      
+          });
+
+        ApiService.getSensorData('blink').then((response) => {
+            var blink=0, noblink=0
+            response.data.data.forEach(vals=>{
+              vals.data.blink==="true"?blink++:noblink++;
+            })
+            this.setState({blinkData:[blink,noblink]})
+      
+          });
+        ApiService.getSensorData('distance').then((response)=>{
             response.data.data.forEach(vals=>{
                 let date = new Date(vals.timestamp)
                 let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
                 this.setState({
-                    temperatureLabels:[...this.state.temperatureLabels,timestring],
-                    temperatureData:[...this.state.temperatureData,vals.data.temperature]
+                    distanceLabels:[...this.state.distanceLabels,timestring],
+                    distanceData:[...this.state.distanceData,vals.data.distance]
                 })
             })
         })
@@ -72,17 +91,31 @@ class Main extends Component {
                     })
                     this.setState({motionData:[motion,nomotion]})
                     break;
-                case('temperature'):
+                case('sound'):
+                    var sound=0,nosound=0
+                    dataFromServer.data.forEach(vals=>{
+                        vals.data.sound==="true"?sound++:nosound++;
+                    })
+                    this.setState({soundData:[sound,nosound]})
+                    break;
+                case('blink'):
+                    var blink=0,noblink=0
+                    dataFromServer.data.forEach(vals=>{
+                        vals.data.blink==="true"?blink++:noblink++;
+                    })
+                    this.setState({blinkData:[blink,noblink]})
+                    break;
+                case('distance'):
                     this.setState({
-                        temperatureData:[],
-                        temperatureLabels:[]
+                        distanceData:[],
+                        distanceLabels:[]
                     })
                     dataFromServer.data.forEach(vals=>{
                         let date = new Date(vals.timestamp)
                         let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
                         this.setState({
-                            temperatureLabels:[...this.state.temperatureLabels,timestring],
-                            temperatureData:[...this.state.temperatureData,vals.data.temperature]
+                            distanceLabels:[...this.state.distanceLabels,timestring],
+                            distanceData:[...this.state.distanceData,vals.data.distance]
                         })
                     })
                     break;
@@ -110,7 +143,7 @@ class Main extends Component {
     }
       
     render(){
-        const {motionData,temperatureData,temperatureLabels} = this.state
+        const {motionData,soundData,blinkData,distanceData,distanceLabels} = this.state
         return (
             <Container fluid>
                 <Row>
@@ -121,12 +154,36 @@ class Main extends Component {
                         title = 'Motion'
                         label1 = 'Motion Detected'
                         label2 = 'No Motion Detected'
+                        color1 = 'rgba(255, 99, 132, 0.2)'
+                        border1 = 'rgba(255, 99, 132, 1)'
+                        color2 = 'rgba(54, 162, 235, 0.2)'
+                        border2 = 'rgba(54, 162, 235, 1)'
                         datakey = {motionData}
                     />
+                    <PieDisplay 
+                        title = 'Sound'
+                        label1 = 'Sound Detected'
+                        label2 = 'No Sound Detected'
+                        color1 = 'rgba(75, 192, 192, 0.2)'
+                        border1 = 'rgba(75, 192, 192, 1)'
+                        color2 = 'rgba(53, 162, 235, 0.2)'
+                        border2 = 'rgba(53, 162, 235, 1)'
+                        datakey = {soundData}
+                    />
+                    <PieDisplay 
+                        title = 'Blink'
+                        label1 = 'Blink on'
+                        label2 = 'Blink off'
+                        color1 = 'rgba(153, 102, 255, 0.2)'
+                        border1 = 'rgba(153, 102, 255, 1)'
+                        color2 = 'rgba(255, 159, 64, 0.2)'
+                        border2 = 'rgba(255, 159, 64, 1)'
+                        datakey = {blinkData}
+                    />
                     <LineChartDisplay
-                        title='Temperature'
-                        datakey={temperatureData}
-                        labelkey={temperatureLabels}
+                        title='Distance'
+                        datakey={distanceData}
+                        labelkey={distanceLabels}
                     />
                 </Row>
             </Container>

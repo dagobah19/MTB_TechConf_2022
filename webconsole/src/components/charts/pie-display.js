@@ -20,12 +20,12 @@ export default function PieDisplay(props) {
                         label: props.title + ' Sensor',
                         data: props.datakey,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
+                            props.color1,
+                            props.color2,
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
+                            props.border1,
+                            props.border2,
                         ],
                         borderWidth: 1,
                         },

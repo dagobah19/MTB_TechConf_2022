@@ -9,7 +9,7 @@ import sendData
 # Counter Clockwise = less sensitive
 
 # Sensor name which will be sent to the server
-sensor_name = "IoTSoundDetector"
+sensor_name = "sound"
 
 # IoT server information
 url = 'http://192.168.1.146:3005'
