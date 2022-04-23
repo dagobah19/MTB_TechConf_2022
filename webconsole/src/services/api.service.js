@@ -3,11 +3,11 @@ import http from '../components/http-common'
 class ApiService {
     //define the operations needed - CRUD
     getSensorData(sensor) {
-        return http.get(`http://localhost:3005/sensordata/${sensor}`);
+        return http.get(`${process.env.REACT_APP_API_URL}/sensordata/${sensor}`);
     }
 
     getSensorList(){
-        return http.get(`http://localhost:3005/sensors`);
+        return http.get(`${process.env.REACT_APP_API_URL}/sensors`);
     }
 
 }

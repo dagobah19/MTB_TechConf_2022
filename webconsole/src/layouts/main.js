@@ -6,7 +6,7 @@ import { Component } from 'react';
 import ApiService from '../services/api.service';
 import { w3cwebsocket as websocket } from 'websocket';
 
-const client = new websocket('ws://localhost:3006')
+const client = new websocket(process.env.REACT_APP_SOCKET_URL)
 
 class Main extends Component {
 
