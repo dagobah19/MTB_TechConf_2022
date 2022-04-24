@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.chart-container, .line-chart-container {
+.chart-container, .line-chart-container, .multi-axis-container {
   margin:2em 2em 0;
   padding:0;
 }
@@ -18,4 +18,8 @@ body {
 }
 .line-chart-container {
   width:40rem;
+}
+
+.multi-axis-container {
+  width: 40rem;
 }

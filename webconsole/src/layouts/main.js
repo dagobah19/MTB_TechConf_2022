@@ -1,6 +1,7 @@
 
 import PieDisplay from '../components/charts/pie-display'
 import LineChartDisplay from '../components/charts/line-chart';
+import MultiAxis from '../components/charts/multi-axis';
 import {Container, Row} from 'react-bootstrap'
 import { Component } from 'react';
 import ApiService from '../services/api.service';
@@ -19,7 +20,10 @@ class Main extends Component {
             soundData:[0,0],
             blinkData:[0,0],
             distanceLabels:[],
-            distanceData:[]
+            distanceData:[],
+            climateLabels:[],
+            climateHumidityData:[],
+            climateTemperatureData:[]
         }
 
     }
@@ -67,6 +71,18 @@ class Main extends Component {
                 this.setState({
                     distanceLabels:[...this.state.distanceLabels,timestring],
                     distanceData:[...this.state.distanceData,vals.data.distance]
+                })
+            })
+        })
+
+        ApiService.getSensorData('climate').then((response)=>{
+            response.data.data.forEach(vals=>{
+                let date = new Date(vals.timestamp)
+                let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+                this.setState({
+                    climateLabels:[...this.state.climateLabels,timestring],
+                    climateTemperatureData:[...this.state.climateTemperatureData,vals.data.temp],
+                    climateHumidityData:[...this.state.climateHumidityData,vals.data.humidity]
                 })
             })
         })
@@ -119,6 +135,22 @@ class Main extends Component {
                         })
                     })
                     break;
+                case('climate'):
+                    this.setState({
+                        climateLabels:[],
+                        climateHumidityData:[],
+                        climateTemperatureData:[]
+                    })
+                    dataFromServer.data.forEach(vals=>{
+                        let date = new Date(vals.timestamp)
+                        let timestring = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+                        this.setState({
+                            climateLabels:[...this.state.climateLabels,timestring],
+                            climateTemperatureData:[...this.state.climateTemperatureData,vals.data.temp],
+                            climateHumidityData:[...this.state.climateHumidityData,vals.data.humidity]
+                        })
+                    })
+                    break;
                 default:
                     break;
             }
@@ -143,7 +175,7 @@ class Main extends Component {
     }
       
     render(){
-        const {motionData,soundData,blinkData,distanceData,distanceLabels} = this.state
+        const {motionData,soundData,blinkData,distanceData,distanceLabels,climateLabels,climateHumidityData,climateTemperatureData} = this.state
         return (
             <Container fluid>
                 <Row>
@@ -186,6 +218,18 @@ class Main extends Component {
                         background = 'rgba(53, 162, 235, 0.5)'
                         datakey={distanceData}
                         labelkey={distanceLabels}
+                    />
+                    <MultiAxis
+                        title='Climate'
+                        labelkey = {climateLabels}
+                        dataset1Label = 'Temperature'
+                        dataset1BorderColor = 'rgb(255, 99, 132)'
+                        dataset1Color = 'rgba(255, 99, 132, 0.5)'
+                        dataset2Label = 'Humidity'
+                        dataset2BorderColor = 'rgb(53, 162, 235)'
+                        dataset2Color = 'rgba(53, 162, 235, 0.5)'
+                        tempData = {climateTemperatureData}
+                        humidityData = {climateHumidityData}
                     />
                 </Row>
             </Container>
