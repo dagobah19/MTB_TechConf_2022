@@ -73,6 +73,10 @@ class Main extends Component {
                     distanceData:[...this.state.distanceData,vals.data.distance]
                 })
             })
+            this.setState({
+                distanceLabels:this.state.distanceLabels.reverse(),
+                distanceData:this.state.distanceData.reverse()
+            })
         })
 
         ApiService.getSensorData('climate').then((response)=>{
@@ -84,6 +88,11 @@ class Main extends Component {
                     climateTemperatureData:[...this.state.climateTemperatureData,vals.data.temp],
                     climateHumidityData:[...this.state.climateHumidityData,vals.data.humidity]
                 })
+            })
+            this.setState({
+                climateLabels:this.state.climateLabels.reverse(),
+                climateTemperatureData:this.state.climateTemperatureData.reverse(),
+                climateHumidityData:this.state.climateHumidityData.reverse()
             })
         })
 
@@ -134,6 +143,10 @@ class Main extends Component {
                             distanceData:[...this.state.distanceData,vals.data.distance]
                         })
                     })
+                    this.setState({
+                        distanceLabels:this.state.distanceLabels.reverse(),
+                        distanceData:this.state.distanceData.reverse()
+                    })
                     break;
                 case('climate'):
                     this.setState({
@@ -149,6 +162,11 @@ class Main extends Component {
                             climateTemperatureData:[...this.state.climateTemperatureData,vals.data.temp],
                             climateHumidityData:[...this.state.climateHumidityData,vals.data.humidity]
                         })
+                    })
+                    this.setState({
+                        climateLabels:this.state.climateLabels.reverse(),
+                        climateTemperatureData:this.state.climateTemperatureData.reverse(),
+                        climateHumidityData:this.state.climateHumidityData.reverse()
                     })
                     break;
                 default:
