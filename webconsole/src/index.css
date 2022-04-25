@@ -23,3 +23,25 @@ body {
 .multi-axis-container {
   width: 40rem;
 }
+
+.motion-table {
+  width:20rem;
+}
+
+.sound-table {
+  width:20rem;
+}
+
+.blink-table {
+  width:20rem;
+}
+
+.distance-table {
+  width:25rem;
+}
+
+.climate-table {
+  width:30rem;
+}
+
+
