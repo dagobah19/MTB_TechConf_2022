@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 class TableView extends Component{
     
     render(){
-        const maxTableEntries = 5
+        const maxTableEntries = 10
         const {motionData,soundData,blinkData,distanceData,distanceLabels,climateLabels,climateHumidityData,climateTemperatureData} = this.props.state
         var distance = [];
         var climate = [];
@@ -27,6 +27,7 @@ class TableView extends Component{
                     <h1>Sensor Console Table View</h1>
                     <Link to="/">Switch to Chart View</Link>
                 </Row>
+                <Row>
                 <h2>Motion</h2>
                 <Table striped bordered hover size="sm" className="motion-table">
                     <thead>
@@ -126,6 +127,7 @@ class TableView extends Component{
                         }
                     </tbody>
                 </Table>
+                </Row>
             </Container>
         )
     }
