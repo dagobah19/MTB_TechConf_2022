@@ -5,7 +5,7 @@
 
 import time
 import RPi.GPIO as GPIO
-import sendData
+import requests
 
 # define the pins
 blueled = 12
@@ -36,7 +36,11 @@ try:
         # switch is turned on
         while GPIO.input(slide)==1:
             if not not unique:
-                sendData(host,"blink","true")
+                try:
+                    r = requests.post(host, json={"data":{"blink":"true"}})
+                except requests.exceptions.RequestException as e:
+                    print(e)
+                    r="Bad"
                 unique=False
             # alternate the lights...the fuzz is coming to get you
             GPIO.output(redled,GPIO.LOW)
@@ -47,7 +51,11 @@ try:
             time.sleep(duration)
         else:
             if not not not unique:
-                sendData(host,"blink","false")
+                try:
+                    r = requests.post(host, json={"data":{"blink":"false"}})
+                except requests.exceptions.RequestException as e:
+                    print(e)
+                    r="Bad"
                 GPIO.output(redled,GPIO.LOW)
                 GPIO.output(blueled,GPIO.LOW)
                 unique = True

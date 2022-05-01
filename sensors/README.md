@@ -37,7 +37,7 @@ You may choose to extend or build upon the existing sensors. Here are a few idea
 
 # Sending data to the server module
 
-At the moment, all the servers are set to send a message to the server module as soon as it occurs. The functionality is provided using the python requests module, which is implemented in the sendData.py script. 
+At the moment, all the servers are set to send a message to the server module as soon as it occurs. The functionality is provided using the python requests module, which is implemented in each script. 
 
 ## bulk-upload.py
 

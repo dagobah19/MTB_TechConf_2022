@@ -4,7 +4,7 @@
 import time
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
-import sendData
+import requests
 
 # define the pins on the MCP3008 we will be using, and mapping them to the pi
 # the var is the name of the chip pin/function and the number is the Pi GPIO
@@ -35,7 +35,11 @@ try:
         print("Distance in cm {:.2f}".format(dist))
         dist_inch = dist / 2.54
         print("Distance in Freedom Units {:.2f}".format(dist_inch))
-        sendData(host,"distance",dist_inch)
+        try:
+            r = requests.post(host, json={"data":{"distance":dist_inch}})
+        except requests.exceptions.RequestException as e:
+            print(e)
+            r="Bad"
         time.sleep(delay)
 except KeyboardInterrupt:
     print("Farewell, freedom lover")

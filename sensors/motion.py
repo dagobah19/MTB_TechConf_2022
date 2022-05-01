@@ -3,7 +3,7 @@
 
 import RPi.GPIO as GPIO
 import time
-import sendData
+import requests
 
 # Sensor name which will be sent to the server
 sensor_name = "motion"
@@ -37,12 +37,20 @@ try:
                 # Motion is detected
                 GPIO.output(led,GPIO.HIGH)
                 if not debug:
-                    sendData(host,"motion","true")
+                    try:
+                        r = requests.post(host, json={"data":{"motion":"true"}})
+                    except requests.exceptions.RequestException as e:
+                        print(e)
+                        r="Bad"
             else:
                 # Motion is not detected
                 GPIO.output(led,GPIO.LOW)
                 if not debug:
-                    sendData(host,"motion","false")
+                    try:
+                        r = requests.post(host, json={"data":{"motion":"false"}})
+                    except requests.exceptions.RequestException as e:
+                        print(e)
+                        r="Bad"
             # pause for 1 second
             time.sleep(1)
         # turn off the LED

@@ -2,7 +2,7 @@
 
 import RPi.GPIO as GPIO
 import time
-import sendData
+import requests
 
 # You can adjust sensitivity of the sound detector using the hardware screw on the sensor
 # Clockwise = more sensitive
@@ -43,7 +43,11 @@ try:
                 soundend = True
                 soundstart = False
                 if not debug:
-                    sendData(host,"sound","true")
+                    try:
+                        r = requests.post(host, json={"data":{"sound":"true"}})
+                    except requests.exceptions.RequestException as e:
+                        print(e)
+                        r="Bad"
             time.sleep(1)
         else:
             # no sound
@@ -53,7 +57,11 @@ try:
                 soundend = False
                 soundstart = True
                 if not debug:
-                    sendData(host,"sound","true")
+                    try:
+                        r = requests.post(host, json={"data":{"sound":"false"}})
+                    except requests.exceptions.RequestException as e:
+                        print(e)
+                        r="Bad"
 # We need this so we can cleanup and free the GPIO when user terminates the program by pressing Ctrl-C
 except KeyboardInterrupt:
     print("Why'd you stop me? An I not good enough for you?")

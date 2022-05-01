@@ -33,8 +33,8 @@ class ChartView extends Component {
                         label2 = 'No Sound Detected'
                         color1 = 'rgba(75, 192, 192, 0.2)'
                         border1 = 'rgba(75, 192, 192, 1)'
-                        color2 = 'rgba(53, 162, 235, 0.2)'
-                        border2 = 'rgba(53, 162, 235, 1)'
+                        color2 = 'rgba(255, 159, 64, 0.2)'
+                        border2 = 'rgba(255, 159, 64, 1)'
                         datakey = {soundData}
                     />
                     <PieDisplay 
