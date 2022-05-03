@@ -48,7 +48,7 @@ try:
                     except requests.exceptions.RequestException as e:
                         print(e)
                         r="Bad"
-            time.sleep(1)
+            time.sleep(1) #Just added a delay to make it look nice visually so the light wouldn't flicker
         else:
             # no sound
             GPIO.output(led, GPIO.LOW)
